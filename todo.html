@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bx Icon CDN -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Boostrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <title>Student Management System</title>
+  </head>
+  <body>
+
+    <div class="container">
+        <div class="my-2">
+            <button class="btn btn-success rounded-0" data-toggle="modal" data-target="#AddRecord"> <span class="bx bx-plus"></span> Add New</button>
+            <button class="btn btn-danger rounded-0" onclick="removeRecords()"> <span class="bx bx-trash"></span> Remove</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped text-center">
+                <thead>
+                    <tr class="bg-success text-white">
+                        <th><input type="checkbox" name="check_all" id="check_all"></th>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>College</th>
+                        <th>Major</th>
+                        <th>Grade</th>
+                        <th>Class</th>
+                        <th>Age</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="data-table">
+                    <tr>
+                        <td colspan="100%"><h5 class="text-center text-danger mb-0">No Record Found!</h5></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="text-right">
+                <!-- <button class="btn btn-success rounded-0"  data-toggle="modal" data-target="#AddRecord"> <span class="bx bx-plus"></span> Add New</button> -->
+                <button class="btn btn-danger rounded-0" onclick="removeRecords()"> <span class="bx bx-trash"></span> Remove</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add modal -->
+    <div class="modal fade" id="AddRecord">
+        <div class="modal-dialog">
+            <div class="modal-content rounded-0">        
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title mb-0">Add Student</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>        
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form action="#" method="post" onsubmit="return false" id="myForm">
+                        <div class="form-group mb-0 mt-1">
+                            <label for="student_id" class="mb-0">Student ID</label>
+                            <input type="text" class="form-control rounded-0" value="" name="student_id" id="student_id" placeholder="Enter student ID" required>
+                        </div>
+                        <div class="form-group mb-0 mt-1">
+                            <label for="name" class="mb-0">Student Name</label>
+                            <input type="text" class="form-control rounded-0" value="" name="name" id="name" placeholder="Enter student name" required>
+                        </div>
+                        <div class="form-group mb-0 mt-1">
+                            <label for="college" class="mb-0">College</label>
+                            <input type="text" class="form-control rounded-0" value="" name="college" id="college" placeholder="Enter college name" required>
+                        </div>
+                        <div class="form-group mb-0 mt-1">
+                            <label for="major" class="mb-0">Major</label>
+                            <input type="text" class="form-control rounded-0" value="" name="major" id="major" placeholder="Enter major" required>
+                        </div>
+                        <div class="form-group mb-0 mt-1">
+                            <label for="grade" class="mb-0">Grade</label>
+                            <input type="text" class="form-control rounded-0" value="" name="grade" id="grade" placeholder="Enter grade" required>
+                        </div>
+                        <div class="form-group mb-0 mt-1">
+                            <label for="class" class="mb-0">Class</label>
+                            <input type="text" class="form-control rounded-0" value="" name="class" id="class" placeholder="Enter class" required>
+                        </div>
+                        <div class="form-group mb-0 mt-1">
+                            <label for="age" class="mb-0">Age</label>
+                            <input type="text" class="form-control rounded-0" value="" name="age" id="age" placeholder="Enter age" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success rounded-0" id="addFormSubmit">Submit</button>
+                    <button type="button" class="btn btn-danger rounded-0" data-dismiss="modal">Close</button>
+                </div>        
+            </div>
+        </div>
+    </div>
+
+    <!-- Show modal -->
+    <div class="modal fade" id="showRecord">
+        <div class="modal-dialog">
+            <div class="modal-content rounded-0">  
+                <div class="modal-header">
+                    <h4 class="modal-title mb-0">Student Details</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" id="showRecordData">
+                </div>
+                <div class="modal-footer">                    
+                    <button type="button" class="btn btn-danger rounded-0" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editRecord">
+        <div class="modal-dialog">
+            <div class="modal-content rounded-0">  
+                <div class="modal-header">
+                    <h4 class="modal-title mb-0">Update Student Details</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" method="post" onsubmit="return false" id="studentUpdateForm">
+                        <input type="hidden" name="index" id="u_index">
+                        <div class="form-group mb-0 mt-1">
+                            <label for="u_student_id" class="mb-0">Student ID</label>
+                            <input type="text" class="form-control rounded-0" value="" name="u_student_id" id="u_student_id" placeholder="Enter student ID" required>
+                        </div>
+                        <div class="form-group mb-0 mt-1">
+                            <label for="u_name" class="mb-0">Student Name</label>
+                            <input type="text" class="form-control rounded-0" value="" name="u_name" id="u_name" placeholder="Enter student name" required>
+                        </div>
+                        <div class="form-group mb-0 mt-1">
+                            <label for="u_college" class="mb-0">College</label>
+                            <input type="text" class="form-control rounded-0" value="" name="u_college" id="u_college" placeholder="Enter college name" required>
+                        </div>
+                        <div class="form-group mb-0 mt-1">
+                            <label for="u_major" class="mb-0">Major</label>
+                            <input type="text" class="form-control rounded-0" value="" name="u_major" id="u_major" placeholder="Enter major" required>
+                        </div>
+                        <div class="form-group mb-0 mt-1">
+                            <label for="u_grade" class="mb-0">Grade</label>
+                            <input type="text" class="form-control rounded-0" value="" name="u_grade" id="u_grade" placeholder="Enter grade" required>
+                        </div>
+                        <div class="form-group mb-0 mt-1">
+                            <label for="u_class" class="mb-0">Class</label>
+                            <input type="text" class="form-control rounded-0" value="" name="u_class" id="u_class" placeholder="Enter class" required>
+                        </div>
+                        <div class="form-group mb-0 mt-1">
+                            <label for="u_age" class="mb-0">Age</label>
+                            <input type="text" class="form-control rounded-0" value="" name="u_age" id="u_age" placeholder="Enter age" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">                    
+                    <button type="button" class="btn btn-success rounded-0" id="updateStudentFormBtn">Update</button>
+                    <button type="button" class="btn btn-danger rounded-0" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+    <script>
+        // student array 
+        var students = [];
+
+        // show students array in #data-table
+        function studentList() {
+            var html = '';
+            for (var i = 0; i < students.length; i++) {
+                html += '<tr>';
+                html += '<td><input type="checkbox" name="check_all" class="checkbox" value="'+i+'"></td>';
+                html += '<td>' + students[i].student_id + '</td>';
+                html += '<td>' + students[i].name + '</td>';
+                html += '<td>' + students[i].college + '</td>';
+                html += '<td>' + students[i].major + '</td>';
+                html += '<td>' + students[i].grade + '</td>';
+                html += '<td>' + students[i].class_ + '</td>';
+                html += '<td>' + students[i].age + '</td>';
+                html += '<td class="py-1"><button class="btn btn-info rounded-0" onclick="showRecord('+ i +')"> <span class="bx bx-show"></span></button><button class="btn btn-warning rounded-0 mx-1" onclick="editRecord('+ i +')"> <span class="bx bx-edit"></span></button><button class="btn btn-danger rounded-0" onclick="deleteRecord('+ i +')"> <span class="bx bx-trash"></span></button></td>';
+                html += '</tr>';
+            }
+            if(html == '') html += '<tr><td colspan="100%"><h5 class="text-center text-dark mb-0">No Record Found!</h5></td></tr>';
+            $('#data-table').html(html); // show students array in #data-table
+        }
+        studentList();
+
+        // add new student
+        $('#addFormSubmit').click(function() {
+            var student_id = $('#student_id').val();
+            var name = $('#name').val();
+            var college = $('#college').val();
+            var major = $('#major').val();
+            var grade = $('#grade').val();
+            var class_ = $('#class').val();
+            var age = $('#age').val();
+            var student = {
+                student_id: student_id,
+                name: name,
+                college: college,
+                major: major,
+                grade: grade,
+                class_: class_,
+                age: age
+            }
+            students.push(student); // push student object to students array
+            studentList(); // show students array in #data-table
+            $('#AddRecord').modal('hide'); 
+            $('#myForm')[0].reset();
+        });
+
+        // show record
+        function showRecord(index){
+            // check index is valid or not
+            if(index >= 0 && index < students.length){
+                var html = '';
+
+                // show table
+                html += '<table class="table table-bordered table-striped text-center">';
+                html += '<tr>';
+                html += '<td>Student ID</td>';
+                html += '<td>'+ students[index].student_id +'</td>';
+                html += '</tr>';
+                html += '<tr>';
+                html += '<td>Name</td>';
+                html += '<td>'+ students[index].name +'</td>';
+                html += '</tr>';
+                html += '<tr>';
+                html += '<td>College</td>';
+                html += '<td>'+ students[index].college +'</td>';
+                html += '</tr>';
+                html += '<tr>';
+                html += '<td>Major</td>';
+                html += '<td>'+ students[index].major +'</td>';
+                html += '</tr>';
+                html += '<tr>';
+                html += '<td>Grade</td>';
+                html += '<td>'+ students[index].grade +'</td>';
+                html += '</tr>';
+                html += '<tr>';
+                html += '<td>Class</td>';
+                html += '<td>'+ students[index].class_ +'</td>';
+                html += '</tr>';
+                html += '<tr>';
+                html += '<td>Age</td>';
+                html += '<td>'+ students[index].age +'</td>';
+                html += '</tr>';
+                html += '</table>';
+                
+                $('#showRecordData').html(html);
+                $('#showRecord').modal('show');
+            }else{
+                alert('Invalid index!');
+            }
+        }
+
+        // edit record
+        function editRecord(index){
+            if(index >= 0 && index < students.length){
+                // set value
+                $('#u_index').val(index);
+                $('#u_student_id').val(students[index].student_id);
+                $('#u_name').val(students[index].name);
+                $('#u_college').val(students[index].college);
+                $('#u_major').val(students[index].major);
+                $('#u_grade').val(students[index].grade);
+                $('#u_class').val(students[index].class_);
+                $('#u_age').val(students[index].age);
+
+                $('#editRecord').modal('show');
+            }else{
+                alert('Invalid index!');
+            }
+        }
+
+        // update student
+        $("#updateStudentFormBtn").click(function(){
+            var index = $('#u_index').val();
+            if(index >= 0 && index < students.length){
+                var student_id = $('#u_student_id').val();
+                var name = $('#u_name').val();
+                var college = $('#u_college').val();
+                var major = $('#u_major').val();
+                var grade = $('#u_grade').val();
+                var class_ = $('#u_class').val();
+                var age = $('#u_age').val();
+                var student = {
+                    student_id: student_id,
+                    name: name,
+                    college: college,
+                    major: major,
+                    grade: grade,
+                    class_: class_,
+                    age: age
+                }
+                students[index] = student; // update student object to students array
+                studentList(); // show students array in #data-table
+                $('#editRecord').modal('hide'); 
+                $('#studentUpdateForm')[0].reset();
+            }else{
+                alert("Invalid Index.")
+            }
+        });
+
+        // delete student
+        function deleteRecord(index){
+            if(index >= 0 && index < students.length){
+                // ask confirmation
+                var conf = confirm("Are you sure?");
+                if(conf){
+                    students.splice(index, 1); // delete student object from students array
+                    studentList(); // show students array in #data-table
+                }
+            }else{
+                alert("Invalid Index.")
+            }
+        }
+
+        // delete with checkbox
+        $('#check_all').click(function(){
+            if(this.checked){
+                $('.checkbox').each(function(){
+                    this.checked = true;
+                });
+            }else{
+                $('.checkbox').each(function(){
+                    this.checked = false;
+                });
+            }
+        });
+
+        // remove records based on checkbox
+        function removeRecords(){
+            var checkbox = $('.checkbox:checked');
+
+            if(checkbox.length > 0){
+                var conf = confirm("Are you sure?");
+                if(conf){
+                    checkbox.each(function(){
+                        var index = $(this).val();
+                        // console.log(index);
+                        students.splice(index, 1); // delete student object from students array
+                    });
+                    studentList(); // show students array in #data-table
+                }
+            }else{
+                alert("Please select records.");
+            }
+        }
+
+    </script>
+  </body>
+</html>
