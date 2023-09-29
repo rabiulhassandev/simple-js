@@ -337,21 +337,20 @@
         });
 
         // remove records based on checkbox
-        function removeRecords(){
-            var checkbox = $('.checkbox:checked');
-
-            if(checkbox.length > 0){
-                var conf = confirm("Are you sure?");
-                if(conf){
-                    checkbox.each(function(){
-                        var index = $(this).val();
-                        // console.log(index);
-                        students.splice(index, 1); // delete student object from students array
+        function removeRecords() {
+            var checkbox = $('.checkbox:checked')
+            if (checkbox.length > 0) {
+                var conf = confirm('Are you sure?')
+                if (conf) {
+                    checkbox.each(function (i) {
+                        students = students.filter((student, index) => {
+                            return !checkbox[i].checked
+                        });
                     });
                     studentList(); // show students array in #data-table
                 }
-            }else{
-                alert("Please select records.");
+            } else {
+                alert('Please select records.')
             }
         }
 
